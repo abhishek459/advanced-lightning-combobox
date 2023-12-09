@@ -47,13 +47,15 @@ export default class AdvancedLightningCombobox extends LightningElement {
     onchangeEvent() {
         let checkedItems = [];
         this.dropdownItems.forEach(element => {
-            console.log(element);
             if (element.selected)
-                checkedItems.push(element);
+                checkedItems.push({
+                    'label': element.label,
+                    'value': element.value
+                });
         });
         this.dispatchEvent(
             new CustomEvent('change', {
-                detail: checkedItems
+                detail: JSON.stringify(checkedItems)
             })
         );
     }
