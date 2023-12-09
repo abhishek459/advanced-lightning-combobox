@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="Actual Component">
+        <div class="container">
+            <input class="slds-input input" oninput={inputChange} onfocusin={focusIn} onfocusout={focusOut} />
+
+            <template if:true={inputIsFocused}>
+                <div class="slds-dropdown slds-dropdown_fluid" role="listbox" tabindex="0" aria-busy="false">
+                    <ul class="slds-listbox slds-listbox_vertical slds-scrollable_y" role="presentation">
+                        <template for:each={filteredDropdownItems} for:item="item">
+                            <li key={item.value} role="presentation" class="slds-listbox__item" data-index={item.index}
+                                title={item.label} onclick={itemClicked}>
+                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
+                                    role="option">
+                                    <lightning-input type="checkbox" checked={item.selected}></lightning-input>
+                                    <span class="slds-media__body slds-p-horizontal_medium">
+                                        <span class="slds-truncate">{item.label}</span>
+                                    </span>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

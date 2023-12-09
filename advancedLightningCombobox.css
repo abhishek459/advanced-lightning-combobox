@@ -1,0 +1,16 @@
+.container {
+    display: block;
+}
+
+.input {
+    position: relative;
+}
+
+.slds-dropdown {
+    position: relative;
+    z-index: 2;
+}
+
+.slds-listbox {
+    max-height: 200px;
+}
