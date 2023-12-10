@@ -9,6 +9,7 @@
     position: absolute;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    margin-top: 0;
 }
 
 .slds-listbox {
@@ -21,4 +22,8 @@
 
 .dropdown-content:hover .dropdown-content {
     display: block;
+}
+
+input {
+    margin-bottom: 2px;
 }
