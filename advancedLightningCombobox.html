@@ -1,8 +1,8 @@
 <template>
-    <div class="container">
-        <input class="slds-input input" oninput={inputChange} />
+    <div class="dropdown">
+        <lightning-input class="input" onchange={inputChange}></lightning-input>
 
-        <div class="slds-dropdown slds-dropdown_fluid" role="listbox" tabindex="0" aria-busy="false">
+        <div class="slds-dropdown slds-dropdown_fluid dropdown-content" role="listbox" tabindex="0" aria-busy="false">
             <ul class="slds-listbox slds-listbox_vertical slds-scrollable_y" role="presentation">
                 <template for:each={filteredDropdownItems} for:item="item">
                     <li key={item.value} role="presentation" class="slds-listbox__item" data-index={item.index}
