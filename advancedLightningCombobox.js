@@ -3,8 +3,13 @@ import { LightningElement, api, track } from 'lwc';
 export default class AdvancedLightningCombobox extends LightningElement {
     inputIsFocused = false;
     @api items;
+    @api label;
     @track dropdownItems = [];
     @track filteredDropdownItems = [];
+
+    get noItemsInDropdown() {
+        return this.filteredDropdownItems.length === 0 ? true : false;
+    }
 
     connectedCallback() {
         setTimeout(() => {
@@ -23,14 +28,6 @@ export default class AdvancedLightningCombobox extends LightningElement {
         const searchValue = event.target.value;
 
         this.filteredDropdownItems = this.dropdownItems.filter(item => item.label.toLowerCase().includes(searchValue.toLowerCase()));
-    }
-
-    focusIn() {
-        this.inputIsFocused = true;
-    }
-
-    focusOut() {
-        // this.inputIsFocused = false;
     }
 
     itemClicked(event) {

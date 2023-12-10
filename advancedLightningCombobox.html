@@ -1,6 +1,17 @@
 <template>
     <div class="dropdown">
-        <lightning-input class="input" onchange={inputChange}></lightning-input>
+        <div class="slds-form-element">
+            <template if:true={label}>
+                <label class="slds-form-element__label" for="text-input-id-1">{label}</label>
+            </template>
+            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                <lightning-icon size="x-small"
+                    class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                    icon-name="utility:down"></lightning-icon>
+                <input type="text" id="text-input-id-1" placeholder={placeholder} class="slds-input"
+                    oninput={inputChange} />
+            </div>
+        </div>
 
         <div class="slds-dropdown slds-dropdown_fluid dropdown-content" role="listbox" tabindex="0" aria-busy="false">
             <ul class="slds-listbox slds-listbox_vertical slds-scrollable_y" role="presentation">
@@ -12,6 +23,17 @@
                             <lightning-input type="checkbox" checked={item.selected}></lightning-input>
                             <span class="slds-media__body slds-p-horizontal_medium">
                                 <span class="slds-truncate">{item.label}</span>
+                            </span>
+                        </div>
+                    </li>
+                </template>
+                <template if:true={noItemsInDropdown}>
+                    <li role="presentation" class="slds-listbox__item"
+                        title="---">
+                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
+                            role="option">
+                            <span class="slds-media__body slds-p-horizontal_medium">
+                                <span class="slds-truncate">---</span>
                             </span>
                         </div>
                     </li>
