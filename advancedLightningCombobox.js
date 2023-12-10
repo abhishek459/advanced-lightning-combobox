@@ -6,9 +6,14 @@ export default class AdvancedLightningCombobox extends LightningElement {
     @api label;
     @track dropdownItems = [];
     @track filteredDropdownItems = [];
+    selectedItemsCounter = 0;
 
     get noItemsInDropdown() {
         return this.filteredDropdownItems.length === 0 ? true : false;
+    }
+
+    get placeholder() {
+        return this.selectedItemsCounter + ' selected';
     }
 
     connectedCallback() {
@@ -35,10 +40,18 @@ export default class AdvancedLightningCombobox extends LightningElement {
             const index = event.currentTarget.dataset.index;
             const selected = this.dropdownItems[index].selected;
             this.dropdownItems[index].selected = !selected;
+            this.updateCounter(!selected);
             this.onchangeEvent();
         } catch (error) {
             console.log(error);
         }
+    }
+
+    updateCounter(selected) {
+        if (selected)
+            this.selectedItemsCounter++;
+        else
+            this.selectedItemsCounter--;
     }
 
     onchangeEvent() {

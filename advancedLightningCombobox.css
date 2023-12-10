@@ -18,3 +18,7 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.dropdown-content:hover .dropdown-content {
+    display: block;
+}
