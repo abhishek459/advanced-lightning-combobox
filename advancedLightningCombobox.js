@@ -7,6 +7,7 @@ export default class AdvancedLightningCombobox extends LightningElement {
     @track dropdownItems = [];
     @track filteredDropdownItems = [];
     selectedItemsCounter = 0;
+    selectedItems = '';
 
     get noItemsInDropdown() {
         return this.filteredDropdownItems.length === 0 ? true : false;
@@ -55,14 +56,22 @@ export default class AdvancedLightningCombobox extends LightningElement {
     }
 
     onchangeEvent() {
+        this.selectedItems = '';
         let checkedItems = [];
         this.dropdownItems.forEach(element => {
-            if (element.selected)
+            if (element.selected) {
                 checkedItems.push({
                     'label': element.label,
                     'value': element.value
                 });
+                this.selectedItems += element.label + ', ';
+            }
         });
+        this.selectedItems = this.selectedItems.slice(0, -2);
+        this.updateParentComponent(checkedItems);
+    }
+
+    updateParentComponent(checkedItems) {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: JSON.stringify(checkedItems)
