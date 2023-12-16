@@ -6,7 +6,7 @@
             </template>
             <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left-right">
                 <lightning-icon size="x-small"
-                    class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+                    class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default slds-p-bottom_small"
                     icon-name="utility:search">
                 </lightning-icon>
                 <input type="text" id="text-input-id-1" placeholder={placeholder} class="slds-input"
@@ -20,18 +20,34 @@
 
         <div class="slds-dropdown slds-dropdown_fluid dropdown-content" role="listbox" tabindex="0" aria-busy="false">
             <ul class="slds-listbox slds-listbox_vertical slds-scrollable_y" role="presentation">
-                <template for:each={filteredDropdownItems} for:item="item">
-                    <li key={item.value} role="presentation" class="slds-listbox__item" data-index={item.index}
-                        title={item.label} onclick={itemClicked}>
+                <template if:false={searching}>
+                    <template for:each={filteredDropdownItems} for:item="item">
+                        <li key={item.value} role="presentation" class="slds-listbox__item" data-index={item.index}
+                            title={item.label} onclick={itemClicked}>
+                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
+                                role="option">
+                                <lightning-input type="checkbox" checked={item.selected}></lightning-input>
+                                <span class="slds-media__body slds-p-horizontal_medium">
+                                    <span class="slds-truncate">{item.label}</span>
+                                </span>
+                            </div>
+                        </li>
+                    </template>
+                </template>
+
+                <template if:true={searching}>
+                    <li role="presentation" class="slds-listbox__item" title="Loading...">
                         <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
                             role="option">
-                            <lightning-input type="checkbox" checked={item.selected}></lightning-input>
                             <span class="slds-media__body slds-p-horizontal_medium">
-                                <span class="slds-truncate">{item.label}</span>
+                                <span class="slds-truncate">
+                                    <lightning-spinner variant="brand" size="small"></lightning-spinner>
+                                </span>
                             </span>
                         </div>
                     </li>
                 </template>
+
                 <template if:true={noItemsInDropdown}>
                     <li role="presentation" class="slds-listbox__item" title="No matching results found">
                         <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"

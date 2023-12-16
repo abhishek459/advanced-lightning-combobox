@@ -6,6 +6,7 @@ export default class AdvancedLightningCombobox extends LightningElement {
         if (this.dropdownItems !== value) {
             this.prepareDropdownItemsData(value);
             this.filteredDropdownItems = this.dropdownItems;
+            selectedItemsCounter = 0;
         }
     };
 
@@ -19,7 +20,7 @@ export default class AdvancedLightningCombobox extends LightningElement {
     selectedItemsString = '';
 
     get noItemsInDropdown() {
-        return this.filteredDropdownItems.length === 0 ? true : false;
+        return this.filteredDropdownItems.length === 0 && !this.searching ? true : false;
     }
 
     get placeholder() {
@@ -37,13 +38,15 @@ export default class AdvancedLightningCombobox extends LightningElement {
     }
 
     timeout;
+    searching = false;
     inputChange(event) {
         const searchValue = event.target.value;
+        this.searching = true;
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
-            console.log('Key pressed');
             this.filteredDropdownItems = this.dropdownItems.filter(item => item.label.toLowerCase().includes(searchValue.toLowerCase()));
-        }, 300);
+            this.searching = false;
+        }, 200);
     }
 
     itemClicked(event) {
@@ -73,17 +76,18 @@ export default class AdvancedLightningCombobox extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: values
+                    values: values
                 }
             })
         );
     }
 
     prepareParentComponentData(checkedItems) {
-        const values = [];
+        let values = '';
         checkedItems.forEach(item => {
-            values.push(item.value);
+            values += item.value + ';';
         });
+        values = values.slice(0, -1);
         return values;
     }
 }
