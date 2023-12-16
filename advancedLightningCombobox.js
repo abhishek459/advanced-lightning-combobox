@@ -2,12 +2,21 @@ import { LightningElement, api, track } from 'lwc';
 
 export default class AdvancedLightningCombobox extends LightningElement {
     inputIsFocused = false;
-    @api items;
+    set items(value) {
+        if (this.dropdownItems !== value) {
+            this.prepareDropdownItemsData(value);
+            this.filteredDropdownItems = this.dropdownItems;
+        }
+    };
+
+    @api get items() {
+        return this.dropdownItems;
+    }
     @api label;
     @track dropdownItems = [];
     @track filteredDropdownItems = [];
     selectedItemsCounter = 0;
-    selectedItems = '';
+    selectedItemsString = '';
 
     get noItemsInDropdown() {
         return this.filteredDropdownItems.length === 0 ? true : false;
@@ -17,65 +26,64 @@ export default class AdvancedLightningCombobox extends LightningElement {
         return this.selectedItemsCounter + ' selected';
     }
 
-    connectedCallback() {
-        setTimeout(() => {
-            this.dropdownItems = JSON.parse(JSON.stringify(this.items));
-            let counter = 0;
-            this.dropdownItems.forEach(item => {
-                item.selected = false;
-                item.index = counter;
-                counter++;
-            })
-            this.filteredDropdownItems = this.dropdownItems;
-        }, 1);
+    prepareDropdownItemsData(value) {
+        this.dropdownItems = JSON.parse(JSON.stringify(value));
+        let counter = 0;
+        this.dropdownItems.forEach(item => {
+            item.selected = false;
+            item.index = counter;
+            counter++;
+        });
     }
 
+    timeout;
     inputChange(event) {
         const searchValue = event.target.value;
-
-        this.filteredDropdownItems = this.dropdownItems.filter(item => item.label.toLowerCase().includes(searchValue.toLowerCase()));
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+            console.log('Key pressed');
+            this.filteredDropdownItems = this.dropdownItems.filter(item => item.label.toLowerCase().includes(searchValue.toLowerCase()));
+        }, 300);
     }
 
     itemClicked(event) {
-        try {
-            const index = event.currentTarget.dataset.index;
-            const selected = this.dropdownItems[index].selected;
-            this.dropdownItems[index].selected = !selected;
-            this.updateCounter(!selected);
-            this.onchangeEvent();
-        } catch (error) {
-            console.log(error);
-        }
+        const itemIndex = event.currentTarget.dataset.index;
+        this.toggleSelectedItem(itemIndex);
+        this.updateCounter(itemIndex);
+        const selectedItemsList = this.dropdownItems.filter(item => item.selected);
+        this.selectedItemsString = this.buildSelectedItemsString(selectedItemsList);
+        this.updateParentComponent(selectedItemsList);
     }
 
-    updateCounter(selected) {
-        if (selected)
-            this.selectedItemsCounter++;
-        else
-            this.selectedItemsCounter--;
+    toggleSelectedItem(itemIndex) {
+        this.dropdownItems[itemIndex].selected = !this.dropdownItems[itemIndex].selected;
     }
 
-    onchangeEvent() {
-        this.selectedItems = '';
-        let checkedItems = [];
-        this.dropdownItems.forEach(element => {
-            if (element.selected) {
-                checkedItems.push({
-                    'label': element.label,
-                    'value': element.value
-                });
-                this.selectedItems += element.label + ', ';
-            }
-        });
-        this.selectedItems = this.selectedItems.slice(0, -2);
-        this.updateParentComponent(checkedItems);
+    updateCounter(itemIndex) {
+        const isSelected = this.dropdownItems[itemIndex].selected;
+        isSelected ? this.selectedItemsCounter++ : this.selectedItemsCounter--;
+    }
+
+    buildSelectedItemsString(selectedItems) {
+        return selectedItems.map(item => item.label).join(', '); // Add comma and space before slicing
     }
 
     updateParentComponent(checkedItems) {
+        const values = this.prepareParentComponentData(checkedItems);
         this.dispatchEvent(
             new CustomEvent('change', {
-                detail: JSON.stringify(checkedItems)
+                detail: {
+                    value: values
+                }
             })
         );
+    }
+
+    prepareParentComponentData(checkedItems) {
+        const values = [];
+        checkedItems.forEach(item => {
+            values.push(item.value);
+        });
+        return values;
     }
 }

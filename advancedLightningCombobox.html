@@ -1,6 +1,6 @@
 <template>
     <div class="dropdown">
-        <div class="slds-form-element">
+        <div class="slds-form-element" title={selectedItemsString}>
             <template if:true={label}>
                 <label class="slds-form-element__label" for="text-input-id-1">{label}</label>
             </template>
@@ -9,7 +9,7 @@
                     class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
                     icon-name="utility:search">
                 </lightning-icon>
-                <input type="text" id="text-input-id-1" title={selectedItems} placeholder={placeholder} class="slds-input"
+                <input type="text" id="text-input-id-1" placeholder={placeholder} class="slds-input"
                     oninput={inputChange} />
                 <lightning-icon size="x-small"
                     class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
@@ -33,11 +33,11 @@
                     </li>
                 </template>
                 <template if:true={noItemsInDropdown}>
-                    <li role="presentation" class="slds-listbox__item" title="---">
+                    <li role="presentation" class="slds-listbox__item" title="No matching results found">
                         <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
                             role="option">
                             <span class="slds-media__body slds-p-horizontal_medium">
-                                <span class="slds-truncate">---</span>
+                                <span class="slds-truncate">--None--</span>
                             </span>
                         </div>
                     </li>
