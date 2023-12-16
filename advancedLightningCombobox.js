@@ -6,7 +6,7 @@ export default class AdvancedLightningCombobox extends LightningElement {
         if (this.dropdownItems !== value) {
             this.prepareDropdownItemsData(value);
             this.filteredDropdownItems = this.dropdownItems;
-            selectedItemsCounter = 0;
+            this.selectedItemsCounter = 0;
         }
     };
 
