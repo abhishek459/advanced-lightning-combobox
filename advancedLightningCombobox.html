@@ -6,7 +6,7 @@
             </template>
             <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left-right">
                 <lightning-icon size="x-small"
-                    class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default slds-p-bottom_small"
+                    class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
                     icon-name="utility:search">
                 </lightning-icon>
                 <input type="text" id="text-input-id-1" placeholder={placeholder} class="slds-input"
@@ -26,7 +26,7 @@
                             title={item.label} onclick={itemClicked}>
                             <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
                                 role="option">
-                                <lightning-input type="checkbox" checked={item.selected}></lightning-input>
+                                <lightning-input type="checkbox" checked={item.isSelected}></lightning-input>
                                 <span class="slds-media__body slds-p-horizontal_medium">
                                     <span class="slds-truncate">{item.label}</span>
                                 </span>
